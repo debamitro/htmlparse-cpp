@@ -1,10 +1,19 @@
 CXX=clang++
+LXX=clang++
+RM=rm -fr
 PLATFLAGS=-m32
-CXXFLAGS=-Wall -std=c++11 -stdlib=libc++
+CXXFLAGS=-Wall -std=c++11 -stdlib=libc++ -c
+LXXFLAGS=-std=c++11 -stdlib=libc++
 OPTFLAGS=-g
 EXE=test_parse
+OBJS=test_parse.o htmldoc.o
+all: build_test_parse
 
-all: build
+clean:
+	$(RM) $(OBJS) $(EXE) *.dSYM 2> /dev/null
 
-build:
-	$(CXX) test_parse.cpp $(PLATFLAGS) $(CXXFLAGS) $(OPTFLAGS) -o $(EXE)
+build_test_parse: $(OBJS)
+	$(LXX) $(OBJS) $(PLATFLAGS) $(LXXFLAGS) $(OPTFLAGS) -o $(EXE)
+
+%.o: %.cpp
+	$(CXX) $< $(PLATFLAGS) $(CXXFLAGS) $(OPTFLAGS) -o $@
