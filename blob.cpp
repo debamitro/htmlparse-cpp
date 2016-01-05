@@ -1,9 +1,9 @@
 #include <sstream>
 #include "blob.hpp"
-#include "htmldoc.hpp"
+#include "tag.hpp"
 
 static void
-get_tag_name_and_attrs (std::ifstream& fh, tag_t & tg) {
+get_tag_name_and_attrs (std::stringstream& fh, tag_t & tg) {
   std::stringstream strm; 
   while (fh.good()) {
     char c;
@@ -29,7 +29,7 @@ matches_from_end (std::string str, std::string pat) {
 }
 
 static void
-get_tag_content (std::ifstream& fh, tag_t & tg) {
+get_tag_content (std::stringstream& fh, tag_t & tg) {
   std::stringstream strm;
   std::string tgend = "</";
   tgend += tg.get_name();
@@ -47,23 +47,24 @@ get_tag_content (std::ifstream& fh, tag_t & tg) {
   tg.add_content(blb);
 }
 
-void htmldoc_t::handle_tag (std::ifstream& fh) {
+static void
+handle_tag (content_list_t & content, std::stringstream& strm) {
   tag_t * tg = new tag_t;
-  get_tag_name_and_attrs (fh, *tg);
-  get_tag_content (fh, *tg);
+  get_tag_name_and_attrs (strm, *tg);
+  get_tag_content (strm, *tg);
   content.push_back(tg);
 }
 
-void htmldoc_t::populate (char * fname) {
-  std::ifstream fh(fname);
-  while (fh.good()) {
+content_list_t
+blob_t::split () {
+  std::stringstream strm(this->val);
+  content_list_t cntnt;
+  while (strm.good()) {
     char c;
-    fh.get(c);
+    strm.get(c);
     if (c == '<') {
-      handle_tag (fh);
+      handle_tag (cntnt,strm);
     }
   }
-  for (auto & itr : content) {
-    itr->expand();
-  }
+  return cntnt;
 }

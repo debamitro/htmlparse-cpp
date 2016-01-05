@@ -6,7 +6,7 @@ CXXFLAGS=-Wall -std=c++11 -stdlib=libc++ -c
 LXXFLAGS=-std=c++11 -stdlib=libc++
 OPTFLAGS=-g
 EXE=test_parse
-OBJS=test_parse.o htmldoc.o
+OBJS=test_parse.o htmldoc.o blob.o tag.o
 all: build_test_parse
 
 clean:

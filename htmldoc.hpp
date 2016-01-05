@@ -11,8 +11,8 @@ class htmldoc_t {
 public:
   htmldoc_t (char * fname) { populate(fname); }
   void dump () {
-    for (auto itr : content) {
-      itr->dump();
+    for (auto & itr : content) {
+      itr->dump(0);
     }
   }
 };
