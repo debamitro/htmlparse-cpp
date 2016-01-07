@@ -43,7 +43,11 @@ get_tag_content (std::ifstream& fh, tag_t & tg) {
       strm << c;
     }
   }
-  blob_t * blb = new blob_t(strm.str());
+  std::string cntntstr = strm.str();
+  size_t tgendlen = tgend.size();
+  size_t cntntstrlen = cntntstr.size();
+  cntntstr.erase(cntntstrlen-tgendlen,tgendlen);
+  blob_t * blb = new blob_t(cntntstr);
   tg.add_content(blb);
 }
 

@@ -19,7 +19,7 @@ public:
   void add_content(elem_t * cntnt) { content.push_back(cntnt); }
   virtual void expand ();
   virtual bool is_blob () const { return false; }
-  virtual void dump(int level = 0) {
+  virtual void dump(int level) {
     for (int i = 0; i < level+1; i++) std::cout << " ";
     std::cout << "start tag " << name << "\n";
     for (auto itr : content) {

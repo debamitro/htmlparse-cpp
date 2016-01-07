@@ -10,7 +10,7 @@ class blob_t : public elem_t {
 public:
   blob_t (const std::string& txt) : val(txt) {}
   virtual content_list_t split ();
-  virtual void dump(int level = 0) {
+  virtual void dump(int level) {
     for (int i = 0; i < level+1; i++) std::cout << " ";
     std::cout << "start blob\n" << val << "\n";
     for (int i = 0; i < level+1; i++) std::cout << " ";

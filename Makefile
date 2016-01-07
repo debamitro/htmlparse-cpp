@@ -17,3 +17,9 @@ build_test_parse: $(OBJS)
 
 %.o: %.cpp
 	$(CXX) $< $(PLATFLAGS) $(CXXFLAGS) $(OPTFLAGS) -o $@
+
+blob.o: blob.hpp
+
+tag.o: tag.hpp
+
+htmldoc.o: htmldoc.hpp
