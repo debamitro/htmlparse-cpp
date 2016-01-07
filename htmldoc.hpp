@@ -7,7 +7,6 @@
 class htmldoc_t {
   content_list_t content;
   void populate (char * fname);
-  void handle_tag (std::ifstream & fh);
 public:
   htmldoc_t (char * fname) { populate(fname); }
   void dump () {
