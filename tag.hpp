@@ -17,15 +17,20 @@ public:
   void set_name(const std::string& name) { this->name = name; }
   const std::string & get_name() const { return this->name; }
   void add_content(elem_t * cntnt) { content.push_back(cntnt); }
+  void add_attr(const std::string& attrname, const std::string& attrval) { attrs[attrname] = attrval; }
   virtual void expand ();
   virtual bool is_blob () const { return false; }
   virtual void dump(int level) {
-    for (int i = 0; i < level+1; i++) std::cout << " ";
+    print_n_blanks(level+1);
     std::cout << "start tag " << name << "\n";
+    for (auto itr : attrs) {
+      print_n_blanks(level+1);
+      std::cout << "attr " << itr.first << "=" << itr.second << "\n";
+    }
     for (auto itr : content) {
       itr->dump(level+1);
     }
-    for (int i = 0; i < level+1; i++) std::cout << " ";
+    print_n_blanks(level+1);
     std::cout << "end tag " << name << "\n";
   }
 };

@@ -4,19 +4,60 @@
 #include "blob.hpp"
 
 void
+get_tag_attrs (std::istream& fh, tag_t&tg) {
+  std::stringstream strm;
+  std::string attrname, attrval;
+  while (fh.good()) {
+    char c;
+    fh.get(c);
+    if (c == '=') {
+      attrname = strm.str();
+      strm = std::stringstream();
+    }
+    else if (c == ' ') {
+      if (attrname.size()) {
+        attrval = strm.str();
+        tg.add_attr(attrname,attrval);
+        attrname = "";
+        attrval  = "";
+      }
+      strm = std::stringstream();
+    }
+    else {
+      strm << c;
+    }
+  }
+  if (attrname.size()) {
+    attrval = strm.str();
+    tg.add_attr(attrname,attrval);
+  }
+}
+
+void
 get_tag_name_and_attrs (std::istream& fh, tag_t & tg) {
-  std::stringstream strm; 
+  std::stringstream strm;
+  bool name_found = false;
   while (fh.good()) {
     char c;
     fh.get(c);
     if (c == '>') {
       break;
     }
+    else if (!name_found && c == ' ') {
+      tg.set_name(strm.str());
+      name_found = true;
+      strm = std::stringstream();
+    }
     else {
       strm << c;
     }
   }
-  tg.set_name(strm.str());
+  if (!name_found) {
+    tg.set_name(strm.str());
+  }
+  else {
+    get_tag_attrs (strm, tg);
+  }
 }
 
 static bool
